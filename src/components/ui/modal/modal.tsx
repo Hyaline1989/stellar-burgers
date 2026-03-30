@@ -1,26 +1,41 @@
-import { FC, memo } from 'react';
-
+import { FC, memo, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import { ModalOverlayUI } from '../modal-overlay';
 import styles from './modal.module.css';
 
-import { CloseIcon } from '@zlden/react-developer-burger-ui-components';
-import { TModalUIProps } from './type';
-import { ModalOverlayUI } from '@ui';
+interface ModalUIProps {
+  title?: string;
+  onClose: () => void;
+  children: React.ReactNode;
+}
 
-export const ModalUI: FC<TModalUIProps> = memo(
-  ({ title, onClose, children }) => (
-    <>
-      <div className={styles.modal}>
-        <div className={styles.header}>
-          <h3 className={`${styles.title} text text_type_main-large`}>
-            {title}
-          </h3>
-          <button className={styles.button} type='button'>
-            <CloseIcon type='primary' onClick={onClose} />
-          </button>
+const modalRoot = document.getElementById('modals');
+
+export const ModalUI: FC<ModalUIProps> = memo(
+  ({ title, onClose, children }) => {
+    useEffect(() => {
+      const handleEsc = (e: KeyboardEvent) => {
+        e.key === 'Escape' && onClose();
+      };
+
+      document.addEventListener('keydown', handleEsc);
+      return () => {
+        document.removeEventListener('keydown', handleEsc);
+      };
+    }, [onClose]);
+
+    return ReactDOM.createPortal(
+      <>
+        <ModalOverlayUI onClick={onClose} />
+        <div className={styles.modal}>
+          <div className={styles.header}>
+            <h2 className={styles.title}>{title}</h2>
+            <button className={styles.close} onClick={onClose} />
+          </div>
+          <div className={styles.content}>{children}</div>
         </div>
-        <div className={styles.content}>{children}</div>
-      </div>
-      <ModalOverlayUI onClick={onClose} />
-    </>
-  )
+      </>,
+      modalRoot as HTMLDivElement
+    );
+  }
 );
