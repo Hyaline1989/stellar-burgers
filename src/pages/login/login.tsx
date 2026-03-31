@@ -1,6 +1,6 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { useDispatch } from '../../services/store';
-import { useNavigate } from 'react-router-dom';
+// ИСПРАВЛЕНО: убран useNavigate
 import { LoginUI } from '@ui-pages';
 import { loginUser } from '../../services/slices/userSlice';
 
@@ -10,7 +10,7 @@ export const Login: FC = () => {
   const [error, setError] = useState<string>('');
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // ИСПРАВЛЕНО: убран navigate
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -18,7 +18,8 @@ export const Login: FC = () => {
 
     try {
       await dispatch(loginUser({ email, password })).unwrap();
-      navigate('/', { replace: true });
+      // ИСПРАВЛЕНО: убрано navigate('/', { replace: true });
+      // Редирект теперь обрабатывается в ProtectedRoute
     } catch (err) {
       setError('Неверный email или пароль');
     }

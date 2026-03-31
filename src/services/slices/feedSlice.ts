@@ -18,17 +18,12 @@ const initialState: FeedState = {
   error: null
 };
 
-export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', async () => {
-  const data = await getFeedsApi();
-  return data;
-});
+// ИСПРАВЛЕНО: упрощён createAsyncThunk
+export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', getFeedsApi);
 
 export const fetchUserOrders = createAsyncThunk(
   'feed/fetchUserOrders',
-  async () => {
-    const orders = await getOrdersApi();
-    return orders;
-  }
+  getOrdersApi
 );
 
 const feedSlice = createSlice({

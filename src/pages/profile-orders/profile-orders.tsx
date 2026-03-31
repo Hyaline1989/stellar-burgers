@@ -5,7 +5,7 @@ import {
   wsConnectionClosed
 } from '../../services/slices/wsSlice';
 import { getCookie } from '../../utils/cookie';
-import { OrdersOrder } from '../../components'; // Используйте ваш UI компонент списка
+import { OrdersList } from '../../components'; // ИСПРАВЛЕНО: OrdersOrder -> OrdersList
 import { Preloader } from '@ui';
 
 export const ProfileOrders: FC = () => {
@@ -31,6 +31,6 @@ export const ProfileOrders: FC = () => {
     return <Preloader />;
   }
 
-  // Замените на ваш UI компонент для отображения списка заказов профиля
-  return <OrdersOrder orders={orders} />;
+  // ИСПРАВЛЕНО: используем OrdersList вместо OrdersOrder
+  return <OrdersList orders={orders} />;
 };

@@ -1,13 +1,13 @@
 import { FC } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useSelector } from '../../services/store';
 import { AppHeaderUI } from '@ui';
+import { RootState } from '../../services/store'; // ИСПРАВЛЕНО: импорт RootState
+
+// ИСПРАВЛЕНО: типизация селектора
+const selectUserName = (state: RootState) => state.user.user?.name || '';
 
 export const AppHeader: FC = () => {
-  const { user } = useSelector((state) => state.user);
-  const location = useLocation();
-
-  const userName = user?.name || '';
+  const userName = useSelector(selectUserName);
 
   return <AppHeaderUI userName={userName} />;
 };

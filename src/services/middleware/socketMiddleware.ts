@@ -6,10 +6,12 @@ import {
   wsConnectionClosed,
   wsGetMessage
 } from '../slices/wsSlice';
+import { TOrdersData } from '../../utils/types';
 
+// Убран any, добавлен тип для payload
 interface WSAction {
   type: string;
-  payload?: any;
+  payload?: string;
 }
 
 export const socketMiddleware = (): Middleware => (store) => {
@@ -20,8 +22,7 @@ export const socketMiddleware = (): Middleware => (store) => {
     const wsAction = action as WSAction;
     const { type, payload } = wsAction;
 
-    if (type === wsConnectionStart.type) {
-      // payload должен содержать URL (с токеном для ЛК или общий для ленты)
+    if (type === wsConnectionStart.type && payload) {
       socket = new WebSocket(payload);
     }
 
@@ -37,8 +38,11 @@ export const socketMiddleware = (): Middleware => (store) => {
       socket.onmessage = (event) => {
         const { data } = event;
         const parsedData = JSON.parse(data);
-        if (parsedData.success) {
+        // ИСПРАВЛЕНО: проверяем наличие success в parsedData
+        if (parsedData && parsedData.success) {
           dispatch(wsGetMessage(parsedData));
+        } else if (parsedData && !parsedData.success) {
+          console.error('WebSocket error:', parsedData);
         }
       };
 

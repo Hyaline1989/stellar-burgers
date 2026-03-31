@@ -1,6 +1,6 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { useDispatch } from '../../services/store';
-import { useNavigate } from 'react-router-dom';
+// ИСПРАВЛЕНО: убран useNavigate
 import { RegisterUI } from '@ui-pages';
 import { registerUser } from '../../services/slices/userSlice';
 
@@ -11,7 +11,7 @@ export const Register: FC = () => {
   const [error, setError] = useState<string>('');
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // ИСПРАВЛЕНО: убран navigate
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ export const Register: FC = () => {
           password
         })
       ).unwrap();
-      navigate('/', { replace: true });
+      // ИСПРАВЛЕНО: убрано navigate('/', { replace: true });
     } catch (err) {
       setError('Ошибка регистрации. Попробуйте другой email.');
     }

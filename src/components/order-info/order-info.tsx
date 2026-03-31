@@ -1,32 +1,41 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient } from '@utils-types';
-import { fetchFeeds } from '../../services/slices/feedSlice';
+import { TIngredient, TOrder } from '@utils-types';
+import { getOrderByNumberApi } from '../../utils/burger-api';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const dispatch = useDispatch();
+  const [orderData, setOrderData] = useState<TOrder | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const { orders, isLoading: isFeedLoading } = useSelector(
-    (state) => state.feed
-  );
   const { ingredients } = useSelector((state) => state.ingredients);
 
   useEffect(() => {
-    if (!orders.length) {
-      dispatch(fetchFeeds());
-    }
-  }, [dispatch, orders.length]);
+    const fetchOrder = async () => {
+      if (!number) return;
+      setIsLoading(true);
+      try {
+        const response = await getOrderByNumberApi(Number(number));
+        if (response.success && response.orders.length > 0) {
+          setOrderData(response.orders[0]);
+        } else {
+          setError('Заказ не найден');
+        }
+      } catch (err) {
+        setError('Ошибка загрузки заказа');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const orderData = useMemo(() => {
-    if (!number || !orders.length) return null;
-    return orders.find((order) => order.number === Number(number));
-  }, [orders, number]);
+    fetchOrder();
+  }, [number]);
 
-  /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -68,8 +77,12 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (isFeedLoading || !orderInfo) {
+  if (isLoading || !orderInfo) {
     return <Preloader />;
+  }
+
+  if (error) {
+    return <div className='text text_type_main-medium'>{error}</div>; // ИСПРАВЛЕНО: одинарные кавычки
   }
 
   return <OrderInfoUI orderInfo={orderInfo} />;

@@ -1,8 +1,9 @@
 import { setCookie, getCookie } from './cookie';
 import { TIngredient, TOrder, TOrdersData, TUser } from './types';
 
-// Исправленный URL
-const URL = 'https://norma.education-services.ru/api';
+// ИСПРАВЛЕНО: URL берется из переменных окружения
+const URL =
+  process.env.BURGER_API_URL || 'https://norma.education-services.ru/api';
 
 const checkResponse = <T>(res: Response): Promise<T> =>
   res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
