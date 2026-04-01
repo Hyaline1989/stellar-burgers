@@ -1,6 +1,7 @@
 import { FC, memo, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { ModalOverlayUI } from '../modal-overlay';
+import { CloseIcon } from '@zlden/react-developer-burger-ui-components';
 import styles from './modal.module.css';
 
 interface ModalUIProps {
@@ -30,7 +31,9 @@ export const ModalUI: FC<ModalUIProps> = memo(
         <div className={styles.modal}>
           <div className={styles.header}>
             <h2 className={styles.title}>{title}</h2>
-            <button className={styles.close} onClick={onClose} />
+            <button className={styles.closeButton} onClick={onClose}>
+              <CloseIcon type='primary' />
+            </button>
           </div>
           <div className={styles.content}>{children}</div>
         </div>

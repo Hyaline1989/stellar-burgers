@@ -1,40 +1,34 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder } from '@utils-types';
-import { getOrderByNumberApi } from '../../utils/burger-api';
+import {
+  fetchOrderByNumber,
+  clearCurrentOrder
+} from '../../services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const dispatch = useDispatch();
-  const [orderData, setOrderData] = useState<TOrder | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
+  const {
+    currentOrder: orderData,
+    isLoading,
+    error
+  } = useSelector((state) => state.order);
   const { ingredients } = useSelector((state) => state.ingredients);
 
   useEffect(() => {
-    const fetchOrder = async () => {
-      if (!number) return;
-      setIsLoading(true);
-      try {
-        const response = await getOrderByNumberApi(Number(number));
-        if (response.success && response.orders.length > 0) {
-          setOrderData(response.orders[0]);
-        } else {
-          setError('Заказ не найден');
-        }
-      } catch (err) {
-        setError('Ошибка загрузки заказа');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (!number) return;
 
-    fetchOrder();
-  }, [number]);
+    dispatch(fetchOrderByNumber(Number(number)));
+
+    return () => {
+      dispatch(clearCurrentOrder());
+    };
+  }, [dispatch, number]);
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
@@ -82,7 +76,7 @@ export const OrderInfo: FC = () => {
   }
 
   if (error) {
-    return <div className='text text_type_main-medium'>{error}</div>; // ИСПРАВЛЕНО: одинарные кавычки
+    return <div className='text text_type_main-medium'>{error}</div>;
   }
 
   return <OrderInfoUI orderInfo={orderInfo} />;

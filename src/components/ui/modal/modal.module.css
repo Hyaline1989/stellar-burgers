@@ -15,7 +15,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 40px 0 40px; /* ИСПРАВЛЕНО: отступы 40px сверху и по бокам */
+  padding: 40px 40px 0 40px;
 }
 
 .title {
@@ -39,12 +39,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.2s ease;
 }
 
 .closeButton:hover {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .content {
-  padding: 0 40px 40px 40px; /* ИСПРАВЛЕНО: отступы 40px снизу и по бокам */
+  padding: 0 40px 40px 40px;
 }

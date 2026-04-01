@@ -1,12 +1,22 @@
 .header {
   background-color: var(--background);
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
+
 .menu {
   display: flex;
   align-items: center;
   max-width: 1240px;
+  width: 100%;
   height: 56px;
   margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .menu_part_left {
