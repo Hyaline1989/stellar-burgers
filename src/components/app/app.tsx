@@ -12,6 +12,7 @@ import {
   ResetPassword,
   Profile,
   ProfileOrders,
+  ProfileLayout,
   NotFound404
 } from '../../pages';
 import {
@@ -106,30 +107,21 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
+              
+              {/* Вложенные маршруты для профиля */}
               <Route
                 path='/profile'
                 element={
                   <ProtectedRoute>
-                    <Profile />
+                    <ProfileLayout />
                   </ProtectedRoute>
                 }
-              />
-              <Route
-                path='/profile/orders'
-                element={
-                  <ProtectedRoute>
-                    <ProfileOrders />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path='/profile/orders/:number'
-                element={
-                  <ProtectedRoute>
-                    <OrderInfo />
-                  </ProtectedRoute>
-                }
-              />
+              >
+                <Route index element={<Profile />} />
+                <Route path='orders' element={<ProfileOrders />} />
+                <Route path='orders/:number' element={<OrderInfo />} />
+              </Route>
+              
               <Route path='*' element={<NotFound404 />} />
             </Routes>
 

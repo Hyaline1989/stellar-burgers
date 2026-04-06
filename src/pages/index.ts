@@ -5,5 +5,6 @@ export { Login } from './login';
 export { NotFound404 } from './not-fount-404';
 export { Profile } from './profile';
 export { ProfileOrders } from './profile-orders';
+export { ProfileLayout } from './profile-layout';
 export { Register } from './register';
 export { ResetPassword } from './reset-password';

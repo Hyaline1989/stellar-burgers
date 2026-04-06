@@ -5,7 +5,7 @@ import {
   wsConnectionClosed
 } from '../../services/slices/wsSlice';
 import { getCookie } from '../../utils/cookie';
-import { OrdersList } from '../../components'; // ИСПРАВЛЕНО: OrdersOrder -> OrdersList
+import { OrdersList } from '../../components';
 import { Preloader } from '@ui';
 
 export const ProfileOrders: FC = () => {
@@ -31,6 +31,5 @@ export const ProfileOrders: FC = () => {
     return <Preloader />;
   }
 
-  // ИСПРАВЛЕНО: используем OrdersList вместо OrdersOrder
   return <OrdersList orders={orders} />;
 };
