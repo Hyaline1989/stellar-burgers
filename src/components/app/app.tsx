@@ -107,7 +107,7 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
-              
+
               {/* Вложенные маршруты для профиля */}
               <Route
                 path='/profile'
@@ -121,7 +121,7 @@ const App = () => {
                 <Route path='orders' element={<ProfileOrders />} />
                 <Route path='orders/:number' element={<OrderInfo />} />
               </Route>
-              
+
               <Route path='*' element={<NotFound404 />} />
             </Routes>
 

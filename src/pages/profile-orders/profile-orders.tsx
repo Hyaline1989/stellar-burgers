@@ -31,5 +31,9 @@ export const ProfileOrders: FC = () => {
     return <Preloader />;
   }
 
-  return <OrdersList orders={orders} />;
+  return (
+    <div style={{ marginTop: '40px' }}>
+      <OrdersList orders={orders} />
+    </div>
+  );
 };
