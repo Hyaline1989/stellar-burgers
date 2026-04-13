@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "name": "Флюоресцентный бургер",
+  "order": {
+    "number": 54321,
+    "_id": "test-order-id",
+    "status": "done",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+}

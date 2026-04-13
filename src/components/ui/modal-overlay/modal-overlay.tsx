@@ -6,5 +6,9 @@ interface ModalOverlayUIProps {
 }
 
 export const ModalOverlayUI: FC<ModalOverlayUIProps> = ({ onClick }) => (
-  <div className={styles.overlay} onClick={onClick} />
+  <div
+    className={styles.overlay}
+    onClick={onClick}
+    data-testid='modal-overlay'
+  />
 );
