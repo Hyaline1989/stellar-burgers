@@ -1,3 +1,23 @@
 body {
   margin: 0;
 }
+
+/* Кастомный скролл */
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #2f2f37;
+}
+
+::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8585ad;
+  border: 3px solid #2f2f37;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8b8d6;
+}

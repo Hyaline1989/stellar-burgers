@@ -1,15 +1,37 @@
+import { useEffect, FC } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
-import { FC } from 'react';
+import {
+  wsConnectionStart,
+  wsConnectionClosed
+} from '../../services/slices/wsSlice';
 
 export const Feed: FC = () => {
-  /** TODO: взять переменную из стора */
-  const orders: TOrder[] = [];
+  const dispatch = useDispatch();
+  const { orders } = useSelector((state) => state.ws);
 
-  if (!orders.length) {
+  useEffect(() => {
+    dispatch(wsConnectionStart('wss://norma.education-services.ru/orders/all'));
+    return () => {
+      dispatch(wsConnectionClosed());
+    };
+  }, [dispatch]);
+
+  // Если заказы уже есть в сторе, показываем интерфейс, иначе — лоадер
+  if (orders.length === 0) {
     return <Preloader />;
   }
 
-  <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  return (
+    <FeedUI
+      orders={orders}
+      handleGetFeeds={() => {
+        dispatch(wsConnectionClosed());
+        dispatch(
+          wsConnectionStart('wss://norma.education-services.ru/orders/all')
+        );
+      }}
+    />
+  );
 };
