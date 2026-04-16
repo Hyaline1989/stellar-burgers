@@ -90,6 +90,12 @@ module.exports = {
     compress: true,
     historyApiFallback: true,
     port: 4000,
-    open: true
+    open: true,
+    client: {
+      overlay: false,           // ОТКЛЮЧАЕМ ОВЕРЛЕЙ
+      webSocketURL: 'auto://0.0.0.0:0/ws'  // УЛУЧШАЕМ WEBSOCKET
+    },
+    hot: true,
+    allowedHosts: 'all'
   }
 };

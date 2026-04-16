@@ -27,27 +27,25 @@ describe('Root Reducer', () => {
   // Тест 2: проверка, что состояние не мутируется при неизвестном экшене
   it('rootReducer должен возвращать то же состояние при неизвестном экшене', () => {
     const prevState = store.getState();
-    
+
     // Создаем новый store с тем же редьюсером и диспатчим неизвестный экшен
     const unknownAction = { type: 'UNKNOWN_ACTION' };
-    
+
     // Используем редьюсер напрямую, импортируя его из store
     // Для этого нужно, чтобы store.ts экспортировал сам редьюсер как функцию
-    
+
     // ВАРИАНТ 1: Если rootReducer в store.ts - это объект, создаем комбинированную функцию
-    const combinedReducer = (state: any, action: any) => {
-      return {
-        ingredients: ingredientsReducer(state?.ingredients, action),
-        burgerConstructor: constructorReducer(state?.burgerConstructor, action),
-        order: orderReducer(state?.order, action),
-        user: userReducer(state?.user, action),
-        feed: feedReducer(state?.feed, action),
-        ws: wsReducer(state?.ws, action)
-      };
-    };
-    
+    const combinedReducer = (state: any, action: any) => ({
+      ingredients: ingredientsReducer(state?.ingredients, action),
+      burgerConstructor: constructorReducer(state?.burgerConstructor, action),
+      order: orderReducer(state?.order, action),
+      user: userReducer(state?.user, action),
+      feed: feedReducer(state?.feed, action),
+      ws: wsReducer(state?.ws, action)
+    });
+
     const state = combinedReducer(prevState, unknownAction);
-    
+
     // Сравниваем ссылки на объекты (должны быть те же, если не изменились)
     expect(state.ingredients).toBe(prevState.ingredients);
     expect(state.burgerConstructor).toBe(prevState.burgerConstructor);
@@ -73,7 +71,9 @@ describe('Root Reducer', () => {
       isLoading: false,
       error: null
     };
-    expect(ingredientsReducer(undefined, { type: 'UNKNOWN' })).toEqual(initialState);
+    expect(ingredientsReducer(undefined, { type: 'UNKNOWN' })).toEqual(
+      initialState
+    );
   });
 
   it('constructor reducer should return initial state', () => {
@@ -81,7 +81,9 @@ describe('Root Reducer', () => {
       bun: null,
       ingredients: []
     };
-    expect(constructorReducer(undefined, { type: 'UNKNOWN' })).toEqual(initialState);
+    expect(constructorReducer(undefined, { type: 'UNKNOWN' })).toEqual(
+      initialState
+    );
   });
 
   it('order reducer should return initial state', () => {
