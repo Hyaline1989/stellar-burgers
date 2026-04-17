@@ -16,10 +16,8 @@ export const BurgerConstructor: FC = () => {
   );
   const { isAuthenticated } = useSelector((state) => state.user);
 
-  // ИСПРАВЛЕНО: очистка конструктора при успешном заказе
   useEffect(() => {
     if (order && !orderRequest) {
-      // Заказ успешно создан, очищаем конструктор
       dispatch(clearConstructor());
     }
   }, [order, orderRequest, dispatch]);
@@ -55,7 +53,6 @@ export const BurgerConstructor: FC = () => {
 
   const closeOrderModal = () => {
     dispatch(clearOrder());
-    // ИСПРАВЛЕНО: убрано dispatch(clearConstructor()) - теперь очищается в useEffect
   };
 
   const price = useMemo(
@@ -69,13 +66,15 @@ export const BurgerConstructor: FC = () => {
   );
 
   return (
-    <BurgerConstructorUI
-      price={price}
-      orderRequest={orderRequest}
-      constructorItems={constructorItems}
-      orderModalData={orderModalData}
-      onOrderClick={onOrderClick}
-      closeOrderModal={closeOrderModal}
-    />
+    <div data-testid='burger-constructor'>
+      <BurgerConstructorUI
+        price={price}
+        orderRequest={orderRequest}
+        constructorItems={constructorItems}
+        orderModalData={orderModalData}
+        onOrderClick={onOrderClick}
+        closeOrderModal={closeOrderModal}
+      />
+    </div>
   );
 };
